@@ -11,6 +11,7 @@ public:
     Node* SW;
     Node* SE;
     T value;
+    std::string name;
     // non-leaf(gray), leaf(black)
     std::string type;   
     // quadrant

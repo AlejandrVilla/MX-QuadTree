@@ -16,5 +16,6 @@ int main()
     tree.insert(7,0,"Miami");
     tree.postOrden();
     cout<<tree.size()<<'\n';
+    tree.graphic("mx_quadtree.dot");
     // cout<<"termino\n";
 }
