@@ -118,13 +118,33 @@ void MX_QuadTree<T>::insert(int x, int y, T value)
     // std::cout<<value<<"-> "<<Q<<'\n';
     Node<T>* nodo = new Node<T>(value, "black", Q);
     if(Q=="NW")
-        tmp->NW = nodo;
-    else if(Q=="NE")
-        tmp->NE = nodo;
-    else if(Q=="SW")
-        tmp->SW = nodo;
-    else if(Q=="SE")
-        tmp->SE = nodo;
+    {
+        if(tmp->NW)         // ya existe nodo
+            tmp->NW->value = value;     // reemplaza
+        else
+            tmp->NW = nodo;
+    }
+    else if(Q=="NE")        // ya existe nodo
+    {
+        if(tmp->NE)
+            tmp->NE->value = value;     // reemplaza
+        else 
+            tmp->NE = nodo;
+    }
+    else if(Q=="SW")        // ya existe nodo
+    {
+        if(tmp->SW)
+            tmp->SW->value = value;     // reemplaza
+        else
+            tmp->SW = nodo;
+    }
+    else if(Q=="SE")        // ya existe nodo
+    {
+        if(tmp->SE)
+            tmp->SE->value = value;     // reemplaza
+        else
+            tmp->SE = nodo;
+    }
     _size++;
 }
 
