@@ -34,5 +34,4 @@ int main()
     tree.insert(0,3,"PERU");
     tree.postOrden();
     tree.graphic("mx_quadtree2.dot");
-    // cout<<"termino\n";
 }

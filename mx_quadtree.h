@@ -18,12 +18,12 @@ public:
     MX_QuadTree(int _W);
     ~MX_QuadTree();
     std::string MX_compare(int x, int y, int _W);
-    void insert(int x, int y, T value);     // ya esta
-    bool search(int x, int y, T val);               // samuel
-    void erase(T value);                    // julio
+    void insert(int x, int y, T value);     
+    bool search(int x, int y, T val);      
+    void erase(T value);                   
     void postOrden();
 
-    void graphic(std::string dir);          // grafica
+    void graphic(std::string dir);       
     void graph_node(std::ofstream& f, Node<T>* nodo, int& null_n);
 
     int size(){return _size;}
@@ -42,7 +42,6 @@ template<typename T>
 MX_QuadTree<T>::~MX_QuadTree()
 {
     root->automatate(root);
-    std::cout<<"c murio\n";
 }
 
 template<typename T>
