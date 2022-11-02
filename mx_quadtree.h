@@ -218,7 +218,7 @@ void MX_QuadTree<T>::erase(int x, int y) {
     std::string q, qf;
     int W_ = W;
     std::vector<std::string> dirs = {"NW", "NE", "SE", "SW"};
-    while(W_ != 1 && t) {
+    do {
         W_ /= 2;
         q = MX_compare(x, y, W_);
         int index = 0;
@@ -235,7 +235,7 @@ void MX_QuadTree<T>::erase(int x, int y) {
         else if(q == "NE") t = t -> NE;
         x %= W_;
         y %= W_;
-    } 
+    } while(W_ != 1 && t);
     if(!t) return;
     if(f) {
         if(qf == "SE") t = f -> SE; 
@@ -243,6 +243,8 @@ void MX_QuadTree<T>::erase(int x, int y) {
         else if(qf == "NW") t = f -> NW;
         else if(qf == "NE") t = f -> NE;
     } else t = root;
+    std::cout << (t -> type == "gray" ? "nay\n" : t -> name);
+    std::cout << "\n";
     int index = 0;
     Node<T> * tmp;
     while(t -> type == "gray") {
@@ -252,11 +254,17 @@ void MX_QuadTree<T>::erase(int x, int y) {
             q = dirs[index];
         }
         tmp = t -> getSon(q);
-        t -> getSon(q) = nullptr;
+        Node<T> * aux = t -> getSon(q);
+        aux = nullptr;
         t = tmp;
     }
+    t = nullptr;
+    std::cout << "borrado\n";
     if(!f) root = nullptr;
-    else f -> getSon(qf) = nullptr;
+    else {
+        Node<T> * aux = f -> getSon(qf);
+        aux = nullptr;
+    }
 }
 
 template<typename T>
