@@ -150,7 +150,7 @@ void MX_QuadTree<T>::insert(int x, int y, T value)
 template <typename T>
 bool MX_QuadTree<T>::search(int x, int y, T val)
 {
-    if (root->value == val)
+    if (W == 1 && root->value == val)
         return true;
     else
     {
