@@ -19,6 +19,7 @@ public:
     Node();
     Node(std::string _type, std::string _Q); 
     Node(T _value, std::string _type, std::string _Q);    
+    Node<T> * getSon(std::string s);
     void automatate(Node<T>* N);
 };
 
@@ -44,6 +45,15 @@ Node<T>::Node(T _value, std::string _type, std::string _Q)
     value = _value;
     type = _type;
     Q = _Q;
+}
+
+template<typename T>
+Node<T> * Node<T>::getSon(std::string s) 
+{
+    if(s == "NW") return NW;
+    if(s == "NE") return NE;
+    if(s == "SW") return SW;
+    if(s == "SE") return SE;
 }
 
 template<typename T>

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <vector> 
 #include "node.h"
 
 template<typename T=int>
@@ -20,7 +21,7 @@ public:
     std::string MX_compare(int x, int y, int _W);
     void insert(int x, int y, T value);     
     bool search(int x, int y, T val);      
-    void erase(T value);                   
+	void erase(int x, int y);                  
     void postOrden();
 
     void graphic(std::string dir);       
@@ -193,18 +194,69 @@ bool MX_QuadTree<T>::search(int x, int y, T val)
         }
         Q = MX_compare(x, y, _W);
         if(Q == "NW")
-            tmp = tmp->NW;
+            return tmp->NW->value == val;
         if(Q == "NE")
-            tmp = tmp->NE;
+            return tmp->NE->value == val;
         if(Q == "SE")
-            tmp = tmp->SE;
+            return tmp->SE->value == val;
         if(Q == "SW")
-            tmp = tmp->SW;
-        if(!tmp) 
-            return false;
-        else
-            return tmp->value == val;
+            return tmp->SW->value == val;
     }
+}
+
+template<typename T> 
+void MX_QuadTree<T>::erase(int x, int y) {
+    if(!root) return;
+    else {
+        if(W == 1) {
+            //returntoavail
+            root = nullptr;
+        }
+    }
+    Node<T> * t = root;
+    Node<T> * f = nullptr;
+    std::string q, qf;
+    int W_ = W;
+    std::vector<std::string> dirs = {"NW", "NE", "SE", "SW"};
+    while(W_ != 1 && t) {
+        W_ /= 2;
+        q = MX_compare(x, y, W_);
+        int index = 0;
+        for(int i = 0; i < 4; i++) if(dirs[i] == q) index = i;
+        if( (t -> getSon(dirs[(index + 2) % 4])) ||
+            (t -> getSon(dirs[(index + 3) % 4])) ||
+            (t -> getSon(dirs[(index + 1) % 4]))    ) {
+            f = t;
+            qf = q; 
+        }
+        if(q == "SE") t = t -> SE; 
+        else if(q == "SW") t = t -> SW; 
+        else if(q == "NW") t = t -> NW;
+        else if(q == "NE") t = t -> NE;
+        x %= W_;
+        y %= W_;
+    } 
+    if(!t) return;
+    if(f) {
+        if(qf == "SE") t = f -> SE; 
+        else if(qf == "SW") t = f -> SW; 
+        else if(qf == "NW") t = f -> NW;
+        else if(qf == "NE") t = f -> NE;
+    } else t = root;
+    int index = 0;
+    Node<T> * tmp;
+    while(t -> type == "gray") {
+        while(!(t -> getSon(q))) {
+            index ++; 
+            index %= 4;
+            q = dirs[index];
+        }
+        tmp = t -> getSon(q);
+        t -> getSon(q) = nullptr;
+        t = tmp;
+    }
+    if(!f) root = nullptr;
+    else f -> getSon(qf) = nullptr;
 }
 
 template<typename T>
