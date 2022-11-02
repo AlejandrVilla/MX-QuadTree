@@ -19,7 +19,7 @@ public:
     ~MX_QuadTree();
     std::string MX_compare(int x, int y, int _W);
     void insert(int x, int y, T value);     // ya esta
-    bool search(Node<T>* N);                // samuel
+    bool search(int x, int y, T val);               // samuel
     void erase(T value);                    // julio
     void postOrden();
 
@@ -146,6 +146,62 @@ void MX_QuadTree<T>::insert(int x, int y, T value)
             tmp->SE = nodo;
     }
     _size++;
+}
+template <typename T>
+bool MX_QuadTree<T>::search(int x, int y, T val)
+{
+    if (root->value == val)
+        return true;
+    else
+    {
+        int _W = W / 2;
+        Node<T> *tmp = root;
+        std::string Q = MX_compare(x, y, _W);
+        while (_W > 1)
+        {
+            if (Q == "NW")
+            {
+                if (tmp->NW)
+                    tmp = tmp->NW;
+                else 
+                    return false;
+            }
+            if (Q == "NE")
+            {
+                if (tmp->NE)
+                    tmp = tmp->NE;
+                else 
+                    return false;
+            }
+            if (Q == "SW")
+            {
+                if (tmp->SW)
+                    tmp = tmp->SW;
+                else 
+                    return false;
+            }
+            if (Q == "SE")
+            {
+                if (tmp->SE)
+                    tmp = tmp->SE;
+                else 
+                    return false;
+            }
+            x = x % _W;
+            y = y % _W;
+            _W = _W / 2;
+            Q = MX_compare(x, y, _W);
+        }
+        Q = MX_compare(x, y, _W);
+        if(Q == "NW")
+            return tmp->NW->value == val;
+        if(Q == "NE")
+            return tmp->NE->value == val;
+        if(Q == "SE")
+            return tmp->SE->value == val;
+        if(Q == "SW")
+            return tmp->SW->value == val;
+    }
 }
 
 template<typename T>

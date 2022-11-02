@@ -22,6 +22,12 @@ int main()
     // tree.graphic("punto7.dot");
     tree.insert(7,0,"Miami");
     // tree.graphic("punto8.dot");
+    if(tree.search(8,8, "Miami"))   
+    {    
+        cout << "Encontrado.\n";
+    }
+    else
+        cout << "No encontrado.\n";
     tree.postOrden();
     cout<<tree.size()<<'\n';
     tree.graphic("mx_quadtree1.dot");
