@@ -22,7 +22,7 @@ int main()
     // tree.graphic("punto7.dot");
     tree.insert(7,0,"Miami");
     // tree.graphic("punto8.dot");
-    if(tree.search(8,8, "Miami"))   
+    if(tree.search(7,5, "Miami"))   
     {    
         cout << "Encontrado.\n";
     }

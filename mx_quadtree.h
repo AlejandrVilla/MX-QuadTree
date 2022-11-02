@@ -194,13 +194,17 @@ bool MX_QuadTree<T>::search(int x, int y, T val)
         }
         Q = MX_compare(x, y, _W);
         if(Q == "NW")
-            return tmp->NW->value == val;
+            tmp = tmp->NW;
         if(Q == "NE")
-            return tmp->NE->value == val;
+            tmp = tmp->NE;
         if(Q == "SE")
-            return tmp->SE->value == val;
+            tmp = tmp->SE;
         if(Q == "SW")
-            return tmp->SW->value == val;
+            tmp = tmp->SW;
+        if(!tmp) 
+            return false;
+        else
+            return tmp->value == val;
     }
 }
 
