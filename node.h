@@ -6,10 +6,10 @@ template <typename T=int>
 class Node
 {
 public:
-    Node* NW;
-    Node* NE;
-    Node* SW;
-    Node* SE;
+    Node<T> * NW;
+    Node<T> * NE;
+    Node<T> * SW;
+    Node<T> * SE;
     T value;
     std::string name;
     // non-leaf(gray), leaf(black)
@@ -20,7 +20,7 @@ public:
     Node(std::string _type, std::string _Q); 
     Node(T _value, std::string _type, std::string _Q);    
     Node<T> * getSon(std::string s);
-    void automatate(Node<T>* N);
+    void automatate(Node<T> * N);
 };
 
 template<typename T>
@@ -53,7 +53,7 @@ Node<T> * Node<T>::getSon(std::string s)
     if(s == "NW") return NW;
     if(s == "NE") return NE;
     if(s == "SW") return SW;
-    if(s == "SE") return SE;
+    else return SE;
 }
 
 template<typename T>

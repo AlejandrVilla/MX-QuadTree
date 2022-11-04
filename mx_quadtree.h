@@ -26,7 +26,7 @@ public:
 
     void graphic(std::string dir);       
     void graph_node(std::ofstream& f, Node<T>* nodo, int& null_n);
-
+    
     int size(){return _size;}
 };
 
@@ -71,6 +71,7 @@ void MX_QuadTree<T>::insert(int x, int y, T value)
     {
         root = new Node<T>("gray", "root");
         root->name = std::to_string(nodo_name++);
+        return;
     }
     Node<T>* tmp = root;
     int _W = W/2;
@@ -218,7 +219,7 @@ void MX_QuadTree<T>::erase(int x, int y) {
     std::string q, qf;
     int W_ = W;
     std::vector<std::string> dirs = {"NW", "NE", "SE", "SW"};
-    do {
+    while(W_ != 1 && t) {
         W_ /= 2;
         q = MX_compare(x, y, W_);
         int index = 0;
@@ -235,7 +236,7 @@ void MX_QuadTree<T>::erase(int x, int y) {
         else if(q == "NE") t = t -> NE;
         x %= W_;
         y %= W_;
-    } while(W_ != 1 && t);
+    } 
     if(!t) return;
     if(f) {
         if(qf == "SE") t = f -> SE; 
@@ -243,28 +244,11 @@ void MX_QuadTree<T>::erase(int x, int y) {
         else if(qf == "NW") t = f -> NW;
         else if(qf == "NE") t = f -> NE;
     } else t = root;
-    std::cout << (t -> type == "gray" ? "nay\n" : t -> name);
-    std::cout << "\n";
-    int index = 0;
-    Node<T> * tmp;
-    while(t -> type == "gray") {
-        while(!(t -> getSon(q))) {
-            index ++; 
-            index %= 4;
-            q = dirs[index];
-        }
-        tmp = t -> getSon(q);
-        Node<T> * aux = t -> getSon(q);
-        aux = nullptr;
-        t = tmp;
-    }
-    t = nullptr;
-    std::cout << "borrado\n";
-    if(!f) root = nullptr;
-    else {
-        Node<T> * aux = f -> getSon(qf);
-        aux = nullptr;
-    }
+    t -> automatate(t);
+    if(qf == "SE") f -> SE = nullptr;
+    if(qf == "NE") f -> NE = nullptr;
+    if(qf == "SW") f -> SW = nullptr;
+    if(qf == "NW") f -> NW = nullptr;
 }
 
 template<typename T>
@@ -289,7 +273,7 @@ template<typename T>
 void MX_QuadTree<T>::graphic(std::string dir)
 {
     int null_n = 1;
-    std::ofstream f(dir);
+    std::ofstream f(dir, std::ios::trunc);
     f<<"graph T{\n";
     graph_node(f, root, null_n);
     f<<"}";
