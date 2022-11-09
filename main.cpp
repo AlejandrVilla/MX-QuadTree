@@ -1,37 +1,36 @@
-#include <iostream>
+#include <bits/stdc++.h>
 #include "mx_quadtree.h"
+#define coord pair<int,int>
 using namespace std;
 
 int main()
 {
-    int W = 8;
+    int W = 160;
+    srand(time(NULL));
     MX_QuadTree<string> tree(8);
-    tree.insert(4,6,"Toronto");
-    // tree.graphic("punto1.dot");
-    tree.insert(6,5,"Buffalo");
-    // tree.graphic("punto2.dot");
-    tree.insert(0,3,"Denver");
-    // tree.graphic("punto3.dot");
-    tree.insert(2,3,"Chicago");
-    // tree.graphic("punto4.dot");
-    tree.insert(2,2,"Omaha");
-    // tree.graphic("punto5.dot");
-    tree.insert(4,0,"Mobile");
-    // tree.graphic("punto6.dot");
-    tree.insert(6,1,"Atlanta");
-    // tree.graphic("punto7.dot");
-    tree.insert(7,0,"Miami");
-    // tree.graphic("punto8.dot");
-    if(tree.search(7,5, "Miami"))   
-    {    
-        cout << "Encontrado.\n";
+    unordered_map<string, coord> locs;
+    vector<string> cities = {"Toronto","Buffalo","Denver","Chicago","Omaha","Mobile","Atlanta", "Miami"};
+    for(int i = 0; i < 8; ++i){
+        int x = 1 + rand() % 8;
+        int y = 1 + rand() % 8;
+        tree.insert(x,y,cities[i]);
+        locs[cities[i]] = {x,y};
     }
-    else
-        cout << "No encontrado.\n";
-    tree.postOrden();
-    cout<<tree.size()<<'\n';
+
+    int asserts = 0;
+    for(auto aux : locs){
+        int val = tree.search(aux.second.first , aux.second.second , aux.first);
+        if(val)
+            printf("%s se encuentra en el arbol, x = %d , y = %d\n", aux.first, aux.second.first, aux.second.second);
+        else
+            printf("%s no se encuentra en el arbol, x = %d , y = %d\n", aux.first, aux.second.first, aux.second.second);
+        asserts += val;
+    }
+    printf("Numero de coincidencias: %d.\n", asserts);
+    printf("Tamanio del arbol: %d.\n" , tree.size());
     tree.graphic("mx_quadtree1.dot");
     tree.insert(0,3,"PERU");
-    tree.postOrden();
+    tree.erase(locs["Atlanta"].first , locs["Atlanta"].second);
+    tree.erase(locs["Buffalo"].first , locs["Buffalo"].second);
     tree.graphic("mx_quadtree2.dot");
 }

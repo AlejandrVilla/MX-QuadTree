@@ -71,12 +71,11 @@ void MX_QuadTree<T>::insert(int x, int y, T value)
     {
         root = new Node<T>("gray", "root");
         root->name = std::to_string(nodo_name++);
-        return;
     }
     Node<T>* tmp = root;
     int _W = W/2;
     std::string Q = MX_compare(x,y,_W);
-    while(_W>1)
+    while(_W>10)
     {
         // std::cout<<value<<"-> "<<Q<<'\n';
         if(Q=="NW" && !tmp->NW)
@@ -195,13 +194,18 @@ bool MX_QuadTree<T>::search(int x, int y, T val)
         }
         Q = MX_compare(x, y, _W);
         if(Q == "NW")
-            return tmp->NW->value == val;
+            if(tmp->NW)
+                return tmp->NW->value == val;
         if(Q == "NE")
-            return tmp->NE->value == val;
+            if(tmp->NE)
+                return tmp->NE->value == val;
         if(Q == "SE")
-            return tmp->SE->value == val;
+            if(tmp->SE)
+                return tmp->SE->value == val;
         if(Q == "SW")
-            return tmp->SW->value == val;
+            if(tmp->SW)
+                return tmp->SW->value == val;
+        return false;
     }
 }
 
@@ -210,7 +214,6 @@ void MX_QuadTree<T>::erase(int x, int y) {
     if(!root) return;
     else {
         if(W == 1) {
-            //returntoavail
             root = nullptr;
         }
     }
